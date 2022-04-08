@@ -2,10 +2,13 @@ import { CloseCircleOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Row, Typography } from "antd";
 
 import React from "react";
+import useHideMenu from "../hooks/useHideMenu";
 
 const { Title, Text } = Typography;
 
 const Desktop = () => {
+  useHideMenu(true);
+
   const close = () => {
     console.log("Salir");
   };
