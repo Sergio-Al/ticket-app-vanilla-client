@@ -1,9 +1,51 @@
-import React from 'react'
+import { CloseCircleOutlined, RightOutlined } from "@ant-design/icons";
+import { Button, Col, Divider, Row, Typography } from "antd";
+
+import React from "react";
+
+const { Title, Text } = Typography;
 
 const Desktop = () => {
+  const close = () => {
+    console.log("Salir");
+  };
+  const nextTicket = () => {
+    console.log("NextTicket");
+  };
   return (
-    <div>Desktop</div>
-  )
-}
+    <>
+      <Row>
+        <Col span={20}>
+          <Title level={2}>Sergio Alejandro</Title>
+          <Text>Usted esta trabajando en el escritorio: </Text>
+          <Text type="success ">5</Text>
+        </Col>
+        <Col span={4} align="right">
+          <Button shape="round" type="danger" onClick={close}>
+            <CloseCircleOutlined />
+            Salir
+          </Button>
+        </Col>
+      </Row>
+      <Divider />
 
-export default Desktop
+      <Row>
+        <Col>
+          <Text>Esta atendiendo el ticket número: </Text>
+          <Text style={{ fontSize: 30 }}>55 </Text>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col offset={18} span={6} align="right">
+          <Button onClick={nextTicket} shape="round" type="primary">
+            <RightOutlined />
+            Siguiente
+          </Button>
+        </Col>
+      </Row>
+    </>
+  );
+};
+
+export default Desktop;
