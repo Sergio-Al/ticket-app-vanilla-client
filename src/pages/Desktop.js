@@ -1,27 +1,39 @@
+import React, { useEffect, useState } from "react";
 import { CloseCircleOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Row, Typography } from "antd";
 
-import React from "react";
 import useHideMenu from "../hooks/useHideMenu";
+
+import { getUserStorage } from "../helpers/getUserStorage";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
 const Desktop = () => {
-  useHideMenu(true);
+  const [user] = useState(getUserStorage());
+  const navigate = useNavigate();
+  useHideMenu(false);
 
   const close = () => {
-    console.log("Salir");
+    localStorage.clear();
+    navigate("/login");
   };
   const nextTicket = () => {
     console.log("NextTicket");
   };
+
+  useEffect(() => {
+    if (!user.agent || !user.desktop) {
+      navigate("/login");
+    }
+  }, [navigate, user]);
   return (
     <>
       <Row>
         <Col span={20}>
-          <Title level={2}>Sergio Alejandro</Title>
+          <Title level={2}>{user.agent}</Title>
           <Text>Usted esta trabajando en el escritorio: </Text>
-          <Text type="success ">5</Text>
+          <Text type="success ">{user.desktop}</Text>
         </Col>
         <Col span={4} align="right">
           <Button shape="round" type="danger" onClick={close}>

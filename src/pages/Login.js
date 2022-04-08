@@ -1,23 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Form, Input, Button, InputNumber, Typography, Divider } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import useHideMenu from "../hooks/useHideMenu";
+import { getUserStorage } from "../helpers/getUserStorage";
 
 const { Title, Text } = Typography;
 
 const Login = () => {
   useHideMenu(false);
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const [user] = useState(getUserStorage());
+  console.log(user);
+  const onFinish = ({ agent, desktop }) => {
+    localStorage.setItem("agent", agent);
+    localStorage.setItem("desktop", desktop);
     navigate("/desktop");
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(() => {
+    if (user.agent && user.desktop) {
+      navigate("/desktop");
+    }
+  }, [navigate, user]);
+
   return (
     <>
       <Title level={2}>Ingresar</Title>
