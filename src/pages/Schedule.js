@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Card, Col, Divider, List, Row, Tag, Typography } from "antd";
 import useHideMenu from "../hooks/useHideMenu";
 import { SocketContext } from "../context/SocketContext";
+import { getLatest } from "../helpers/getLatest";
 
 const { Title, Text } = Typography;
 
@@ -10,6 +11,10 @@ const Schedule = () => {
 
   const { socket } = useContext(SocketContext);
   const [tickets, setTickets] = useState([]);
+
+  useEffect(() => {
+    getLatest().then(setTickets);
+  }, []);
 
   useEffect(() => {
     socket.on("ticket-assigned", (ticketAssigned) => {
