@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CloseCircleOutlined, RightOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Row, Typography } from "antd";
 
@@ -6,11 +6,14 @@ import useHideMenu from "../hooks/useHideMenu";
 
 import { getUserStorage } from "../helpers/getUserStorage";
 import { useNavigate } from "react-router-dom";
+import { SocketContext } from "../context/SocketContext";
 
 const { Title, Text } = Typography;
 
 const Desktop = () => {
   const [user] = useState(getUserStorage());
+  const { socket } = useContext(SocketContext);
+  const [ticketToWork, setticketToWork] = useState(null);
   const navigate = useNavigate();
   useHideMenu(false);
 
@@ -19,7 +22,9 @@ const Desktop = () => {
     navigate("/login");
   };
   const nextTicket = () => {
-    console.log("NextTicket");
+    socket.emit("next-ticket-work", user, (ticket) => {
+      setticketToWork(ticket);
+    });
   };
 
   useEffect(() => {
@@ -43,13 +48,14 @@ const Desktop = () => {
         </Col>
       </Row>
       <Divider />
-
-      <Row>
-        <Col>
-          <Text>Esta atendiendo el ticket número: </Text>
-          <Text style={{ fontSize: 30 }}>55 </Text>
-        </Col>
-      </Row>
+      {ticketToWork && (
+        <Row>
+          <Col>
+            <Text>Esta atendiendo el ticket número: </Text>
+            <Text style={{ fontSize: 30 }}>{ticketToWork.number} </Text>
+          </Col>
+        </Row>
+      )}
 
       <Row>
         <Col offset={18} span={6} align="right">
